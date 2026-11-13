@@ -1,0 +1,43 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрать код
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Java (нужна для Android SDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Установить зависимости
+        run: pip install -r requirements.txt
+
+      - name: Создать config.py из секретов
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          printf 'SUPABASE_URL = "%s"\nSUPABASE_KEY = "%s"\n' "$SUPABASE_URL" "$SUPABASE_KEY" > config.py
+
+      - name: Собрать APK
+        run: flet build apk --verbose
+
+      - name: Сохранить APK как артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: water-diary-apk
+          path: build/apk/*.apk

@@ -1,0 +1,15 @@
+[project]
+name = "water-diary"
+version = "0.1.0"
+description = "Дневник воды: Flet + Supabase"
+requires-python = ">=3.10"
+dependencies = [
+    "flet==0.28.3",
+    "supabase",
+]
+
+[tool.flet]
+org = "com.example"
+product = "Дневник воды"
+company = "Student"
+copyright = "Student"
