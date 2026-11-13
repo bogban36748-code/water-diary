@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Забрать код
         uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
           python-version: "3.11"
 
       - name: Java (нужна для Android SDK)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
